@@ -1,0 +1,63 @@
+﻿@model IEnumerable<OnlineShopping.Models.Slider>
+@{
+    ViewBag.Title = "Slider";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<div class="container-fluid">
+    <!--BreadCrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+        </li>
+        <li class="breadcrumb-item active">@ViewBag.Title</li>
+    </ol>
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            @ViewBag.Title
+            <a class="btn btn-primary float-right" href="@Url.Action("Create", "Slider")" role="button">Add New</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Redirect</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>
+                                        <img src="/Images/Slider/@item.Image" height="100"/>
+                                    </td>
+                                    <td>@item.Title</td>
+                                    <td>@item.Redirect</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col">
+                                                <a href="@Url.Action("Edit", "Slider", new { ID = item.ID })" class="btn btn-sm btn-info">Edit</a>
+                                            </div>
+                                            <div class="col">
+                                                <button data-redirect="@Url.Action("Delete", "Slider", new { ID = item.ID })" class="btn btn-sm btn-danger DeleteThis">Delete</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

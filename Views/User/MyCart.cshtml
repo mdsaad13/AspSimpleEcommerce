@@ -1,0 +1,70 @@
+﻿@model List<OnlineShopping.Models.Cart>
+@{
+    ViewBag.Title = "My Cart";
+    ViewBag.Account_Active = "active";
+    ViewBag.Account_Active_MyCart = "active";
+
+    double TotalPrice = 0;
+
+    if (Model.Count > 0)
+    {
+        <h2>@ViewBag.Title</h2>
+        <table class="table">
+            @foreach (var item in Model)
+            {
+                bool OutOfStock = item.Product.Quantity <= 0;
+                if (!OutOfStock)
+                {
+                    TotalPrice += item.Product.Price;
+                }
+                <tr>
+                    <td>
+                        <img src="~/Images/Products/@item.Product.ImageUrl" height="150">
+                    </td>
+                    <td class="@(OutOfStock ? "text-danger" : "")">
+                        <span class="trim-text">@item.Product.Title</span>
+                        <br />
+                        <a href="@Url.Action("ViewCategory", "Home", new { ID = item.Product.CatID })"><span class="badge badge-secondary">@item.Product.CategoryName</span></a>
+                    </td>
+                    <th class="@(OutOfStock ? "text-danger" : "")">
+                        @item.Product.Price.ToString("C")
+                        @if (OutOfStock)
+                        {
+                            <br> <small class="text-uppercase">Product out of stock!</small>
+                        }
+                    </th>
+                    <td>
+                        <a href="@Url.Action("BuyNow", new { ID = item.Product.ID })" class="btn btn-sm btn-success">Buy Now</a>
+                        <a href="@Url.Action("RemoveFromCart", new { ID = item.ID })" class="btn btn-sm btn-danger">Remove</a>
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="row">
+            <div class="col-md-4 ml-auto">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Total</th>
+                        <th class="h2">@TotalPrice.ToString("C")</th>
+                    </tr>
+                </table>
+                <form action="@Url.Action("Checkout")" method="post">
+                    <button type="submit" class="btn btn-success btn-lg w-100 mt-3">Buy Now</button>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-4 m-auto">
+                <div class="alert alert-warning">
+                    <strong>Your cart is empty!</strong>
+                    <br>
+                    <a href="/">Click here</a> to Continue Shopping
+                </div>
+            </div>
+        </div>
+    }
+}
+

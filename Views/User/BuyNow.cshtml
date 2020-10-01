@@ -1,0 +1,56 @@
+﻿@model OnlineShopping.Models.Products
+@{
+    ViewBag.Title = "Buy Now";
+    bool OutOfStock = Model.Quantity <= 0;
+}
+    <h2>@ViewBag.Title</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th colspan="2">Product</th>
+            <th>Price</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <img src="~/Images/Products/@Model.ImageUrl" height="150">
+            </td>
+            <td class="@(OutOfStock ? "text-danger" : "") trim-text">
+                @Model.Title
+            </td>
+            <th class="@(OutOfStock ? "text-danger" : "")">
+                @Model.Price.ToString("C")
+            </th>
+            @if (OutOfStock)
+            {
+                <th class="text-danger text-uppercase">
+                    Product out of stock
+                </th>
+            }
+            else
+            {
+                <th class="text-success text-uppercase">
+                    Product available
+                </th>
+            }
+        </tr>
+    </tbody>
+</table>
+<hr />
+<div class="row">
+    <div class="col-md-4 ml-auto">
+        <table class="table table-bordered">
+            <tr>
+                <th>Total</th>
+                <th class="h2">@Model.Price.ToString("C")</th>
+            </tr>
+        </table>
+        <form method="post">
+            <button type="submit" class="btn btn-success btn-lg w-100 mt-3" @(OutOfStock ? "disabled" : "")>
+                Buy Now
+            </button>
+        </form>
+    </div>
+</div>

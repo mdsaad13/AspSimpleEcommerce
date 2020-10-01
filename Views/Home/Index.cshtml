@@ -1,0 +1,103 @@
+﻿@model Tuple<List<OnlineShopping.Models.Slider>, List<OnlineShopping.Models.Products>, List<OnlineShopping.Models.Categories>>
+@{
+    ViewBag.Title = "Home";
+    ViewBag.Home_Active = "active";
+}
+
+@{
+    if (Model.Item1.Count > 0) // Slider
+    {
+        int i = 0;
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                @{
+                    foreach (var Sliderindicators in Model.Item1)
+                    {
+                        <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="@(i == 0 ? "active": "")"></li>
+                        i++;
+                    }
+                    i = 1;
+                }
+            </ol>
+            <div class="carousel-inner">
+                @foreach (var SliderItem in Model.Item1)
+                {
+                    <div class="carousel-item @(i == 1 ? "active": "")">
+                        <a href="@SliderItem.Redirect" target="_blank">
+                            <img src="~/Images/Slider/@SliderItem.Image" alt="@SliderItem.Title" class="d-block w-100" width="800" height="400" />
+                        </a>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h3>@SliderItem.Title</h3>
+                        </div>
+                    </div>
+                    i++;
+                }
+
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    }
+
+    <hr />
+
+    if (Model.Item2.Count > 0) // Featured Products
+    {
+        <div class="row my-4">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-10">
+                        <h2>
+                            Featured Products
+                        </h2>
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+            </div>
+            @foreach (var FeaturedProducts in Model.Item2)
+            {
+                <div class="col-md-4">
+                    @{
+                        Html.RenderPartial("_SingleProduct", FeaturedProducts);
+                    }
+                </div>
+
+            }
+        </div>
+        <hr />
+    }
+    if (Model.Item3.Count > 0) // Categories and Products
+    {
+        foreach (var Categories in Model.Item3)
+        {
+            <div class="row my-4">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-10">
+                            <h2>@Categories.Name</h2>
+                        </div>
+                        <div class="col-2 text-right">
+                            <a href="@Url.Action("ViewCategory", "Home", new { ID = Categories.ID })" class="btn btn-outline-dark">View All</a>
+                        </div>
+                    </div>
+                </div>
+                @foreach (var Product in Categories.Products)
+                {
+                    <div class="col-md-4">
+                        @{
+                            Html.RenderPartial("_SingleProduct", Product);
+                        }
+                    </div>
+                }
+
+            </div>
+            <hr />
+        }
+    }
+}

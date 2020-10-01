@@ -1,0 +1,33 @@
+﻿@model List<OnlineShopping.Models.Products>
+@{
+    ViewBag.Title = "Category - " + Model[0].CategoryName;
+    ViewBag.Categories_Active = "active";
+    ViewData["Categories_Active" + Model[0].CatID] = "active";
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Categories", "Home")">Categories</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+    </ol>
+</nav>
+
+<div class="row my-4">
+    <div class="col-12">
+        <div class="row">
+            <div class="col-12">
+                <h2>@ViewBag.Title</h2>
+            </div>
+        </div>
+    </div>
+    @foreach (var Product in Model)
+    {
+        <div class="col-md-4">
+            @{
+                Html.RenderPartial("_SingleProduct", Product);
+            }
+        </div>
+    }
+
+</div>

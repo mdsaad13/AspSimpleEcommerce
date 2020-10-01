@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2>Home</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h5 class="card-title">Total Orders</h5>
+                        <a href="@Url.Action("Index", "Orders")" class="btn btn-light">View</a>
+                    </div>
+                    <div class="col-6 text-right">
+                        <h1>@ViewBag.Total</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h5 class="card-title">Total Orders Pending</h5>
+                        <a href="@Url.Action("Index", "Orders")" class="btn btn-light">View</a>
+                    </div>
+                    <div class="col-6 text-right">
+                        <h1>@ViewBag.TotalPending</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h5 class="card-title">Total Orders Out for Delivery</h5>
+                        <a href="@Url.Action("Index", "Orders")" class="btn btn-light">View</a>
+                    </div>
+                    <div class="col-6 text-right">
+                        <h1>@ViewBag.TotalOutforDelivery</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h5 class="card-title">Total Orders delivered</h5>
+                        <a href="@Url.Action("Index", "Orders")" class="btn btn-light">View</a>
+                    </div>
+                    <div class="col-6 text-right">
+                        <h1>@ViewBag.TotalDelivered</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <h5 class="card-title">Total Orders cancelled</h5>
+                        <a href="@Url.Action("Index", "Orders")" class="btn btn-light">View</a>
+                    </div>
+                    <div class="col-6 text-right">
+                        <h1>@ViewBag.TotalCancelled</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

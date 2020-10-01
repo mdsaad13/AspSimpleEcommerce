@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - @AppEnv.AppName</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @Styles.Render("~/Content/css")
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">@AppEnv.AppName</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item @ViewBag.Home_Active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item @ViewBag.Products_Active">
+                    <a class="nav-link" href="@Url.Action("Products", "Home")">Products</a>
+                </li>
+                <li class="nav-item dropdown @ViewBag.Categories_Active">
+                    <a class="nav-link dropdown-toggle" href="@Url.Action("Categories", "Home")" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categories
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @foreach (var SingleCat in ViewBag.AllCategories)
+                        {
+                            <a class="dropdown-item @ViewData["Categories_Active"+SingleCat.ID]" href="@Url.Action("ViewCategory", "Home", new { id = SingleCat.ID })">@SingleCat.Name (@SingleCat.ActiveProducts)</a>
+                        }
+                    </div>
+                </li>
+                <li class="nav-item dropdown @ViewBag.Account_Active">
+                    <a class="nav-link dropdown-toggle" href="@Url.Action("MyAccount", "User")" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        My Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        @if (Session[AppEnv.UserSessionKey] == null)
+                        {
+                            <a class="dropdown-item @ViewBag.Account_Active_Login" href="@Url.Action("Login", "User")">Login</a>
+                            <a class="dropdown-item @ViewBag.Account_Active_Register" href="@Url.Action("Register", "User")">Register</a>
+                        }
+                        else
+                        {
+                            <a class="dropdown-item @ViewBag.Account_Active_MyAccount" href="@Url.Action("MyAccount", "User")">My Account</a>
+                            <a class="dropdown-item @ViewBag.Account_Active_MyOrders" href="@Url.Action("MyOrders", "User")">My Orders</a>
+                            <a class="dropdown-item @ViewBag.Account_Active_MyCart" href="@Url.Action("MyCart", "User")">My Cart</a>
+                            <hr />
+                            <a class="dropdown-item" href="@Url.Action("Logout", "User")">Logout</a>
+                        }
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        @{
+            if (Session["Home_Flash_Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>@Html.Raw(Session["Home_Flash_Success"])</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                Session.Remove("Home_Flash_Success");
+            }
+            if (Session["Home_Flash_Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>@Html.Raw(Session["Home_Flash_Error"])</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                Session.Remove("Home_Flash_Error");
+            }
+            if (Session["Home_Flash_Warning"] != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>@Html.Raw(Session["Home_Flash_Warning"])</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                Session.Remove("Home_Flash_Warning");
+            }
+        }
+
+        @RenderBody()
+        <hr />
+        <footer class="mt-auto">
+            <div class="row">
+                <div class="col-md-12 copyright">
+                    <div class="col-md-6 col-sm-6 copyright-left">
+                        <p>&copy; @DateTime.Now.Year - @AppEnv.AppName. All right reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

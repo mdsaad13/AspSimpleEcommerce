@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>@ViewBag.Title - @AppEnv.AppName</title>
+    <link href="~/AdminAssets/css/styles.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+
+    @RenderSection("styles", required: false)
+
+</head>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="@Url.Action("Index", "Admin")">@AppEnv.AppName</a>
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Navbar-->
+        <ul class="navbar-nav ml-auto ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user fa-fw"></i>
+                    @Session["Name"]
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item" href="#" onclick="document.getElementById('logout_form').submit()">
+                        Logout
+                    </a>
+                    <form action="/admin/logout" method="post" id="logout_form">
+                        @Html.AntiForgeryToken()
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <a class="nav-link" href="@Url.Action("Index", "Admin")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "Slider")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Slider
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "Categories")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Product Categories
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "Products")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Products
+                        </a>
+                        <a class="nav-link" href="@Url.Action("Index", "Orders")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Orders
+                        </a>
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main class="py-3">
+                <div class="container-fluid">
+                    @{
+                        if (Session["Flash_Success"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>@Session["Flash_Success"]</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            Session.Remove("Flash_Success");
+                        }
+                        if (Session["Flash_Error"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <strong>@Session["Flash_Error"]</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            Session.Remove("Flash_Error");
+                        }
+                    }
+                    @RenderBody()
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted" style="margin: auto;">
+                            Copyright &copy; @DateTime.Now.Year - @AppEnv.AppName
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="~/AdminAssets/js/scripts.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="~/AdminAssets/assets/demo/datatables-demo.js"></script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#dataTable').dataTable();
+        });
+
+        $(document).on('click', '.DeleteThis', function (e) {
+            e.preventDefault();
+            var main_question = $(this).data('main_question');
+            var sub_question = $(this).data('sub_question');
+
+            if (typeof main_question === 'undefined') main_question = 'Are you sure? ';
+            if (typeof sub_question === 'undefined') sub_question = '';
+
+            if (confirm(main_question + sub_question)) {
+                window.location.replace($(this).data('redirect'));
+            }
+        });
+
+    </script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>
+

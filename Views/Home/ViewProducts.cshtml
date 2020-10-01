@@ -1,0 +1,39 @@
+﻿@model OnlineShopping.Models.Products
+@{
+    ViewBag.Title = Model.Title;
+    ViewBag.Products_Active = "active";
+    bool OutOfStock = Model.Quantity <= 0;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="@Url.Action("Products", "Home")">Products</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-lg-6 mb-4">
+        <img src="~/Images/Products/@Model.ImageUrl" class="img-fluid">
+    </div>
+    <div class="col-lg-6 mb-4">
+        <h1>@Model.Title</h1>
+        <h5>
+            <a href="@Url.Action("ViewCategory", "Home", new { ID = Model.CatID })"><span class="badge badge-secondary">@Model.CategoryName</span></a>
+        </h5>
+        <p class="text-justify">
+            @Model.Description
+        </p>
+        @if (OutOfStock)
+        {
+            <h3>
+                <span class="badge badge-danger">Product out of stock!</span>
+            </h3>
+        }
+        <h1 class="price mb-5 @(OutOfStock ? "text-danger" : "")">@Model.Price.ToString("C")</h1>
+
+        <a href="@Url.Action("AddToCart", "User", new { ID = Model.ID })" class="btn btn-info" role="button">Add To Cart</a>
+        <a href="@Url.Action("BuyNow", "User", new { ID = Model.ID })" class="btn btn-dark @(OutOfStock ? "disabled" : "")" role="button">Buy Now</a>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+﻿@model OnlineShopping.Models.Products
+@{
+    bool OutOfStock = Model.Quantity <= 0;
+}
+<div class="card">
+    <div class="responsive-img-comtainer">
+        <img src="~/Images/Products/@Model.ImageUrl" class="card-img-top">
+    </div>
+    <div class="card-body">
+        <h5 class="card-title trim-text">
+            <a href="@Url.Action("ViewProducts", "Home", new { ID = Model.ID })" class="text-dark">@Model.Title</a>
+        </h5>
+        <h6>
+            <a href="@Url.Action("ViewCategory", "Home", new { ID = Model.CatID })"><span class="badge badge-secondary">@Model.CategoryName</span></a>
+        </h6>
+        @if (OutOfStock)
+        {
+            <h5>
+                <span class="badge badge-danger">Product out of stock!</span>
+            </h5>
+        }
+        <p class="card-text trim-text">
+            @Model.Description
+        </p>
+        <h3 class="price @(OutOfStock ? "text-danger" : "")">@Model.Price.ToString("C")</h3>
+        <a href="@Url.Action("ViewProducts", "Home", new { ID = Model.ID })" class="btn btn-primary">View</a>
+        <a href="@Url.Action("AddToCart", "User", new { ID = Model.ID })" class="btn btn-info" role="button">Add To Cart</a>
+        <a href="@Url.Action("BuyNow", "User", new { ID = Model.ID })" class="btn btn-dark @(OutOfStock ? "disabled" : "")" role="button">Buy Now</a>
+    </div>
+</div>

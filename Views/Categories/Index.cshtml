@@ -1,0 +1,72 @@
+﻿@model IEnumerable<OnlineShopping.Models.Categories>
+@{
+    ViewBag.Title = "Catogories";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<div class="container-fluid">
+    <!--BreadCrumbs-->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Categories</li>
+    </ol>
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            @ViewBag.Title
+            <a class="btn btn-primary float-right" href="@Url.Action("Create", "Categories")" role="button">Add New</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Category Name</th>
+                            <th>Is Active</th>
+                            <th>Active Products</th>
+                            <th>Total Products</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@item.Name</td>
+                                    <td class="font-weight-bold">
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="text-success">Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">No</span>
+                                        }
+                                    </td>
+                                    <td>@item.ActiveProducts</td>
+                                    <td>@item.TotalProducts</td>
+                                    <td>
+                                        <div class="row">
+                                            <div class="col">
+                                                <a href="@Url.Action("Edit", "Categories", new { ID = item.ID })" class="btn btn-sm btn-info">Edit</a>
+                                            </div>
+                                            <div class="col">
+                                                <button data-redirect="@Url.Action("Delete", "Categories", new { ID = item.ID })" class="btn btn-sm btn-danger DeleteThis" data-sub_question="Deleting this will delete all products and orders related to it">Delete</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
